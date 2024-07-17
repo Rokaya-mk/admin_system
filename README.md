@@ -5,19 +5,19 @@ This project is a user project management system built with Laravel API and Vue.
 
 ## Screenshots
 **Login**
-![Screenshot 1](https://github.com/Rokaya-mk/ProjectForge/blob/main/administration-system-frontend/public/img/signin.png)
+![Screenshot 1](https://github.com/Rokaya-mk/admin_system/blob/main/administration-system-frontend/public/img/signin.png)
 **dashboard**
-![Screenshot 2](https://github.com/Rokaya-mk/ProjectForge/blob/main/administration-system-frontend/public/img/dashboard.png)
+![Screenshot 2](https://github.com/Rokaya-mk/admin_system/blob/main/administration-system-frontend/public/img/dashboard.png)
 **Projects**
-![Screenshot 3](https://github.com/Rokaya-mk/ProjectForge/blob/main/administration-system-frontend/public/img/projects.png)
+![Screenshot 3](https://github.com/Rokaya-mk/admin_system/blob/main/administration-system-frontend/public/img/projects.png)
 **Search**
-![Screenshot 4](https://github.com/Rokaya-mk/ProjectForge/blob/main/administration-system-frontend/public/img/search.png)
+![Screenshot 4](https://github.com/Rokaya-mk/admin_system/blob/main/administration-system-frontend/public/img/search.png)
 **Add Project**
-![Screenshot 5](https://github.com/Rokaya-mk/ProjectForge/blob/main/administration-system-frontend/public/img/addproject.png)
+![Screenshot 5](https://github.com/Rokaya-mk/admin_system/blob/main/administration-system-frontend/public/img/addproject.png)
 **Users**
-![Screenshot 6](https://github.com/Rokaya-mk/ProjectForge/blob/main/administration-system-frontend/public/img/usersliste.png)
+![Screenshot 6](https://github.com/Rokaya-mk/admin_system/blob/main/administration-system-frontend/public/img/usersliste.png)
 **Push Notifications**
-![Screenshot 6](https://github.com/Rokaya-mk/ProjectForge/blob/main/administration-system-frontend/public/img/notifications.png)
+![Screenshot 6](https://github.com/Rokaya-mk/admin_system/blob/main/administration-system-frontend/public/img/notifications.png)
 ## Features
 
 - **Roles Managment**: Two user roles; Admin and User
