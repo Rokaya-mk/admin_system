@@ -31,6 +31,12 @@
                               </tbody>
                           </table>
                       </div>
+                      <!-- pagination -->
+                      <Pagination
+                            v-if="userLinks"
+                            :pagination="userLinks"
+                            @paginate="getProjects($event)"
+                            :offset="4" />
                   </div>
                   
               </div>
@@ -43,21 +49,25 @@
 
 <script>
 // @ is an alias to /src
-import ProjectsList from '@/components/ProjectsList'
+
 import { mapGetters, mapActions } from "vuex";
+import Pagination from '@/components/Pagination.vue';
+
 import axios from 'axios';
 
 export default {
     components:{
+        Pagination
     },
      data() {
          return {
-             
+            offset: 4,
          };
      },
+  
      mounted() {
         if(this.authenticated){
-            this.getUserProjects(this.user);
+            this.getUserProjects([this.user,this.userLinks.current_page]);
         }else{
             this.$router.push({ path: "/login" })
         }
@@ -75,6 +85,7 @@ export default {
             'authenticated' : 'auth/authenticated', 
              user : 'auth/user',
              userProjects : 'user/userProjects',
+             userLinks : 'user/userLinks',
          }),
          
      },
@@ -82,6 +93,9 @@ export default {
          ...mapActions({
              getUserProjects : 'user/getUserProjects'
          }),
+         getProjects(page){
+            this.getUserProjects([this.user,page])
+         },
          // change status color
          getStatusClass(status) {
          switch (status) {

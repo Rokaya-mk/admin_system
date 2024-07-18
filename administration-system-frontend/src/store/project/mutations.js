@@ -1,20 +1,19 @@
 export default{
     setProject(state, payload) {
-        state.projects = payload
+        state.projects = payload.data
+        state.projectLinks = {
+            total: payload.meta.total,
+            per_page: payload.meta.per_page,
+            from: payload.meta.from,
+            to: payload.meta.to,
+            current_page: payload.meta.current_page,
+            last_page: payload.meta.last_page,
+            
+        } 
     },
     setErrors(state, error) {
         state.error = error;
     },
-    set_projects: (state, data) => {
-        state.projects = data.data
-        state.projectLinks = [];
-        state.projectLinks.push(data.links['first']);
-        state.projectLinks.push(data.links['next']);
-        state.projectLinks.push(data.links['last']);
-       
-        console.log(state.projectLinks)
-                
-        
-    },
+   
     
 }

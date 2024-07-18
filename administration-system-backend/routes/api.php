@@ -40,6 +40,7 @@ Route::group(['namespace' => 'api', 'prefix' => 'v1'], function () {
       Route::post('users', [UserController::class, 'store'])->name('users.store');
       Route::put('users/{project}', [UserController::class, 'update'])->name('users.update');
       Route::delete('users/{project}', [UserController::class, 'destroy'])->name('users.destroy');
+      Route::get('searchUser', [UserController::class, 'searchUser']);
     Route::get('profile',[UserController::class,'profile']);
     Route::post('profile/passwordUpdate/{id}',[UserController::class,'updatePassword']);
       Route::get('getBarChartData/{year}', [ProjectController::class, 'getBarChartData']);

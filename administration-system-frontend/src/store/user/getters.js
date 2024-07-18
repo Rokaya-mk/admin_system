@@ -2,9 +2,10 @@ export default {
     users(state){
         return state.users
     },
-  
+    userLinks(state) {
+        return state.userLinks
+    },
     userPermissions(state) {
-        console.log(state.userPermissions)
         return state.userPermissions
     },
     userProjects(state){

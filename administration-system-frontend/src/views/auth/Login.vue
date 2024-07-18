@@ -87,7 +87,6 @@ export default {
     },
     mounted() {
         if(this.authenticated){
-            console.log(this.user.user_id )
                     if(this.user.role_id == 1 && this.user ){
                          this.$router.push({ path: "/dashboard" })
                     }else{

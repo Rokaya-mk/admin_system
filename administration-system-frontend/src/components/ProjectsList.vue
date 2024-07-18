@@ -66,10 +66,11 @@
                             </table>
                         </div>
                         <!-- pagination -->
-                        <Bootstrap5Pagination 
-                            :data="projects" 
-                            @pagination-change-page="getProjects"
-                        />
+                        <Pagination
+                            v-if="projectLinks"
+                            :pagination="projectLinks"
+                            @paginate="getProjects($event)"
+                            :offset="4" />
                         <!-- Modal -->
                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
@@ -135,15 +136,14 @@
     </div>
  </template>
  <script>
- import { Bootstrap5Pagination } from 'laravel-vue-pagination';
+ import Pagination from '@/components/Pagination.vue';
  import { Modal } from "bootstrap";
  import { mapGetters, mapActions } from "vuex";
  import FlashMessage from "@/components/FlashMessage.vue";
  export default {
      components:{
          FlashMessage,
-         Bootstrap5Pagination
-
+         Pagination
         },
      data() {
          return {
@@ -158,13 +158,14 @@
              },
              // object error
              projectErrors: {},
-             search_value : ""
+             search_value : "",
+             offset: 4,
          };
      },
      mounted() {
  
          this.modal = new Modal(document.getElementById("exampleModal"));
-         this.getProjects();
+         this.getProjects(this.projectLinks.current_page);
          this.getUsers()
         
          // this.$store.dispatch('user/getUserRolesPermissions');
@@ -197,13 +198,6 @@
          search() {
             this.searchP(this.search_value)
              },
-        getResults(link) {
-            if(!link.url || link.active) {
-                return;
-            }else{
-                this.$store.dispatch('project/getProjectsResults', link);
-            }
-        },
          openModal() {
              this.editMode = false;
              this.projectData.name = "";
@@ -244,7 +238,7 @@
                      .dispatch("project/updateProject", this.projectData)
                      .then((response) => {
                         console.log(response)
-                         this.getProjects();
+                         this.getProjects(this.projectLinks.current_page);
                          this.closeModal();
                          this.setFlashMessage({ message: 'Project was Updated !!', type: 'alert-success' });
                      });
@@ -255,7 +249,7 @@
                  this.$store
                      .dispatch("project/deleteProject", project)
                      .then((response) => {
-                         this.getProjects();
+                         this.getProjects(this.projectLinks.current_page);
                          this.closeModal();
                          this.setFlashMessage({ message: 'Project was Deleted !!', type: 'alert-success' });
                      });

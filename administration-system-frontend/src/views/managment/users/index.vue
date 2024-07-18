@@ -13,29 +13,21 @@
                         </button>
                     </div>
                     <div class="card-body" >
-                        <div class="row px-5 d-flex justify-content-between align-items-center mb-2">
-                            <!-- <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="search_type">Search Type</label>
-                                    <select  class="form-control" v-model="searchData.search_type">
-                                        <option value="name">Name</option>
-                                    </select>
-                                </div>
-                            </div> -->
-                            <!-- <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="search_value">Search Value</label>
-                                    <input type="text" class="form-control" 
-                                            v-model="searchData.search_value" 
-                                            @keyup="search">
-                                </div>
-                            </div> -->
-                            <!-- <div class="col-md-3  mt-1">
-                                <button @click="search" class="btn btn-success">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                                
-                            </div> -->
+                        <div class="row px-5 d-flex justify-content-start  mb-2">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="search_value">Search Value</label>
+                                <input type="text" class="form-control" 
+                                        v-model="search_value" 
+                                        @keyup="search">
+                            </div>
+                        </div>
+                        <div class="col-md-3  mt-3">
+                            <button @click="search" class="btn btn-success">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
                         </div>
                         <div class="table-responsive" v-if="userPermissions.has('users-read')">
                             <table class="table table-hover text-center">
@@ -70,6 +62,13 @@
                                 </tbody>
                             </table>
                         </div>
+                        <!-- pagination -->
+                        <Pagination
+                            v-if="userLinks"
+                            :pagination="userLinks"
+                            @paginate="getUsers($event)"
+                            :offset="4" />
+                            
                         <!-- Modal -->
                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
@@ -149,13 +148,16 @@
  import { Modal } from "bootstrap";
  import { mapGetters, mapActions } from "vuex";
  import FlashMessage from "@/components/FlashMessage.vue";
+ import Pagination from '@/components/Pagination.vue';
  export default {
      components:{
-         FlashMessage
+         FlashMessage,
+         Pagination,
      },
      data() {
          return {
              editMode: false,
+             disabled:false,
              modal: "",
              userData: {
                  id: "",
@@ -163,20 +165,19 @@
                  email : "",
                  password : "",
                  password_confirmation:"",
-                 role_id : ""
+                 role_id : "",
+                 
              },
+             offset: 4,
              // object error
              userErrors: {},
-             // searchData: {
-             //         search_type: "name",
-             //         search_value: "",
-             //     },
+             search_value : "",
          };
      },
      mounted() {
  
          this.modal = new Modal(document.getElementById("exampleModal"));
-         this.getUsers();  
+         this.getUsers(this.userLinks.current_page);  
               
          
      },
@@ -188,6 +189,7 @@
          ...mapGetters({
              users :'user/users',
               userPermissions : 'user/userPermissions',
+              userLinks : 'user/userLinks'
          }),
          
      },
@@ -195,11 +197,11 @@
          ...mapActions({
              setFlashMessage : 'flash/setFlashMessage',
              getUsers : 'user/getUsers',
-             // searchuser : 'user/searchuser'
+             searchU : 'user/searchUser'
          }),
-         // search() {
-         //          this.searchuser(this.searchData)
-         //     },
+         search() {
+            this.searchU(this.search_value)
+             },
          openModal() {
              this.editMode = false;
              this.userData.name = "";
@@ -227,7 +229,6 @@
          },
          // show edit user modal
          editUser(user) {
-            console.log(user)
              this.editMode = true;
              this.userData.id = user.id;
              this.userData.name = user.name;
@@ -242,7 +243,7 @@
                  this.$store
                      .dispatch("user/updateUser", this.userData)
                      .then((response) => {
-                         this.getUsers();
+                         this.getUsers(this.userLinks.current_page);
                          this.closeModal();
                          this.setFlashMessage({ message: 'User was Updated !!', type: 'alert-success' });
                      });
@@ -253,7 +254,7 @@
                  this.$store
                      .dispatch("user/deleteUser", user)
                      .then((response) => {
-                         this.getUsers();
+                         this.getUsers(this.userLinks.current_page);
                          this.closeModal();
                          this.setFlashMessage({ message: 'User was Deleted !!', type: 'alert-success' });
                      });

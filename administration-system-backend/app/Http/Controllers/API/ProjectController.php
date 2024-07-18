@@ -36,9 +36,9 @@ class ProjectController extends BaseController
             $projects= Project::where(function($query) use ($search) {
                 $query->where('name', 'LIKE', "%$search%")
                     ->orwhere('status','LIKE', "%$search%");
-            })->latest()->paginate(10);
+            })->paginate(10);
         }else{
-            $projects = Project::orderBy('created_at', 'desc')->latest()->paginate(10);
+            $projects = Project::orderBy('created_at', 'desc')->paginate(10);
         }
         return ProjectResource::collection($projects);
     }

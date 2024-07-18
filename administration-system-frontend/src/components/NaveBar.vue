@@ -37,8 +37,7 @@ export default {
         })
     },
     mounted() {
-      // console.log(this.user.role_id)
-      // console.log(this.user,this.authenticated)
+      
     },
   components:{
     Notifications,

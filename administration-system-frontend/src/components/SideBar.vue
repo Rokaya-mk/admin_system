@@ -69,7 +69,6 @@
   },
   methods: {
     toggleSidebar() {
-      console.log(this.user.id)
       this.isExpanded = !this.isExpanded;
     }
   }

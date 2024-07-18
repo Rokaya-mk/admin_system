@@ -24,7 +24,21 @@ class UserController extends BaseController
     public function index()
     {
         $this->authorize('viewAny',User::class);
-        return UserResource::collection(User::all());
+        return UserResource::collection(User::paginate(4));
+    }
+    // search users
+    public function searchUser(Request $request){
+        $this->authorize('viewAny',User::class);
+        $search =$request->search_value;
+        if($search){
+            $users= User::where(function($query) use ($search) {
+                $query->where('name', 'LIKE', "%$search%")
+                    ->orwhere('email','LIKE', "%$search%");
+            })->paginate(10);
+        }else{
+            $users = User::orderBy('created_at', 'desc')->paginate(10);
+        }
+        return UserResource::collection($users);
     }
 
     /**
@@ -75,8 +89,8 @@ class UserController extends BaseController
     
         
     }
-    public function userProjects(Request $request, string $id){
-        $projects = Project::where('user_id',$id)->get();
+    public function userProjects(string $id){
+        $projects = Project::where('user_id',$id)->paginate(10);
         return response()->json($projects);
         
     }

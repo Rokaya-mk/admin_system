@@ -50,7 +50,6 @@ export default {
     logout({commit}){
         axios.post("logout")
         .then((response) => {
-            console.log(response)
             commit('setToken', null);
             commit('setUser', null);
             localStorage.removeItem('token');

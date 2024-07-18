@@ -2,17 +2,17 @@ import axios from "axios";
 
 export default {
   // retreive projects data from api 
-  getProjects({commit,state}, page=1) {
+  getProjects({commit},payload) {
+    console.log(payload)
     axios
-        .get("projects")
+        .get(`projects?page=${payload}`)
         .then((response) => {
             console.log(response)
-            commit('setProject', response.data.data)
+            commit('setProject', response.data)
             
         })
         .catch((error) => {
             if (error.response && error.response.status === 422) { // Validation error
-                console.log('yes')
                 commit('setErrors', error.response.data.errors);
             } else {
                 console.error("Error fetching projects:", error);
@@ -20,21 +20,19 @@ export default {
         });
     },
     // search 
-     // Search users
+     // Search projects
      searchProject({commit}, payload) {
         setTimeout(function() {
-            console.log(1)
             axios.get(`searchProject?search_value=${payload}`).then((response) => {
-                console.log(response.data.data)
-                commit('setProject', response.data.data)
+                commit('setProject', response.data)
             }).catch(err => {
                 console.log(err);
             });
         });
     },
-    getProjectsResults: (context, link) => {
+    getProjectsResults: ({commit}, link) => {
         axios.get(link.url).then((response) => {
-            context.commit('set_projects', response.data.data)
+            commit('setProject', response.data)
         });
     },
     // store project in db
@@ -42,7 +40,6 @@ export default {
         axios
             .post("projects", payload)
             .then((response) => {
-                console.log(response.data);
             }).catch((error) => {
                 if (error.response.status === 422) { // Validation error
                     commit('setErrors', error.response.data.errors);
@@ -55,7 +52,6 @@ export default {
      updateProject({commit}, payload) {
         axios.put(`projects/${payload.id}`, payload)
             .then((response) => {
-                console.log(response);
             })
             .catch((error) => {
                 if (error.response.status === 422) { // Validation error

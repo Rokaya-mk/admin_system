@@ -2,23 +2,32 @@ import axios from "axios";
 
 export default{
     // get users list
-  getUsers({commit,state}) {
+  getUsers({commit},payload) {
     axios
-        .get("users")
+        .get(`users?page=${payload}`)
         .then((response) => {
-            commit('setUsers', response.data.data)
+            commit('setUsers', response.data)
         })
         .catch((error) => {
             console.error("Error fetching users:", error);
         });
     },
-    
-    getUserProjects({commit,state},user) {
+     // search 
+     // Search users
+     searchUser({commit}, payload) {
+        setTimeout(function() {
+            axios.get(`searchUser?search_value=${payload}`).then((response) => {
+                commit('setUsers', response.data)
+            }).catch(err => {
+                console.log(err);
+            });
+        });
+    },
+    getUserProjects({commit},payload) {
         axios
-            .get(`userProjects/${user.id}`)
+            .get(`userProjects/${payload[0].id}?page=${payload[1]}`)
             .then((response) => {
-                console.log(response.data)
-                commit('setUserProjects', response.data)
+                commit('setUserProjects', response)
             })
             .catch((error) => {
                 console.error("Error fetching user projects:", error);
